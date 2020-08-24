@@ -18,12 +18,12 @@ dune_add_test(
 # rm3-show
 add_executable(rm3-show rm-show.cc)
 target_compile_definitions(rm3-show PRIVATE -DUG_DIM_3)
-target_link_libraries(rm3-show PRIVATE ugL ugS3 ${DUNE_LIBS})
+target_link_libraries(rm3-show PRIVATE Dune::dune-uggrid ugL ugS3 ${DUNE_LIBS})
 
 # rm3-writeRefRules2file
 add_executable(rm3-writeRefRules2file rm-writeRefRules2file.cc rm-write2file.h rm-write2file.cc)
 target_compile_definitions(rm3-writeRefRules2file PRIVATE -DUG_DIM_3)
-target_link_libraries(rm3-writeRefRules2file PRIVATE ugL ugS3 ${DUNE_LIBS})
+target_link_libraries(rm3-writeRefRules2file PRIVATE Dune::dune-uggrid ugL ugS3 ${DUNE_LIBS})
 
 install(FILES
   algebra.h

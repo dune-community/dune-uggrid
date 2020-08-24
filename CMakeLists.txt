@@ -1,11 +1,9 @@
 # set up project
-project("dune-uggrid" C CXX)
+cmake_minimum_required(VERSION 3.13)
+project(dune-uggrid VERSION 2.8.0 LANGUAGES CXX)
 
 #circumvent not building docs
 set(BUILD_DOCS 1)
-
-# general stuff
-cmake_minimum_required(VERSION 3.13)
 
 # Guess the dune-common build directory if it is not yet set
 if(NOT (dune-common_DIR OR dune-common_ROOT OR
@@ -16,8 +14,7 @@ endif()
 
 #find dune-common and set the module path
 find_package(dune-common REQUIRED)
-list(APPEND CMAKE_MODULE_PATH ${dune-common_MODULE_PATH}
-     "${CMAKE_SOURCE_DIR}/cmake/modules")# make sure our own modules are found
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
 #include the dune macros
 include(DuneMacros)
@@ -116,15 +113,15 @@ macro(ug_add_dim_libs LIB_NAME)
       if(OBJECT AND DUNE_BUILD_BOTH_LIBS)
         set_property(TARGET "${LIB_NAME}${dim}" PROPERTY POSITION_INDEPENDENT_CODE TRUE)
       endif()
-      dune_target_link_libraries(${LIB_NAME}${dim} ${PROJECT_NAME})
+      target_link_libraries(${LIB_NAME}${dim} PRIVATE ${PROJECT_NAME})
       if(ADD_LIB_ADD_LIBS)
-        dune_target_link_libraries(${LIB_NAME}${dim} ${ADD_LIB_ADD_LIBS})
+        target_link_libraries(${LIB_NAME}${dim} PRIVATE ${ADD_LIB_ADD_LIBS})
       endif()
       set(_libs "${LIB_NAME}${dim}")
     endif()
     foreach(_lib ${_libs})
       target_compile_definitions("${_lib}" PRIVATE "-DUG_DIM_${dim}")
-      target_link_libraries("${_lib}" PUBLIC ${DUNE_LIBS})
+      target_link_libraries("${_lib}" PRIVATE ${DUNE_LIBS})
       if(OBJECT)
         add_dune_mpi_flags("${_lib}" OBJECT)
       else()
@@ -148,6 +145,6 @@ add_subdirectory(cmake/modules)
 set(DDD_MAX_PROCBITS_IN_GID ${UG_DDD_MACROBITS})
 # finalize the dune project, e.g., generate config.h etc.
 # Use package init to set additional information
-set(dune-uggrid_INIT "set(UG_PARALLEL ${UG_ENABLE_PARALLEL})")
+set(DUNE_CUSTOM_PKG_CONFIG_SECTION "set(UG_PARALLEL ${UG_ENABLE_PARALLEL})")
 
 finalize_dune_project(GENERATE_CONFIG_H_CMAKE)
