@@ -121,7 +121,6 @@ macro(ug_add_dim_libs LIB_NAME)
     endif()
     foreach(_lib ${_libs})
       target_compile_definitions("${_lib}" PRIVATE "-DUG_DIM_${dim}")
-      target_link_libraries("${_lib}" PRIVATE ${DUNE_LIBS})
       if(OBJECT)
         add_dune_mpi_flags("${_lib}" OBJECT)
       else()
@@ -145,6 +144,7 @@ add_subdirectory(cmake/modules)
 set(DDD_MAX_PROCBITS_IN_GID ${UG_DDD_MACROBITS})
 # finalize the dune project, e.g., generate config.h etc.
 # Use package init to set additional information
-set(DUNE_CUSTOM_PKG_CONFIG_SECTION "set(UG_PARALLEL ${UG_ENABLE_PARALLEL})")
+set(DUNE_CUSTOM_PKG_CONFIG_SECTION "set(UG_PARALLEL ${UG_ENABLE_PARALLEL})
+set(UG_ENABLED_DIMENSIONS ${UG_ENABLED_DIMENSIONS})")
 
 finalize_dune_project(GENERATE_CONFIG_H_CMAKE)

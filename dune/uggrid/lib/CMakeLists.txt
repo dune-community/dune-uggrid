@@ -12,13 +12,10 @@ endforeach()
 dune_add_library(ugL $<TARGET_OBJECTS:devices> $<TARGET_OBJECTS:low> ${_parallel_objs}
   SOURCES
   ../parallel/ddd/dddcontext.cc
-  ../parallel/ppif/ppifcontext.cc
-  ADD_LIBS ${DUNE_LIBS}
-  )
+  ../parallel/ppif/ppifcontext.cc)
 ug_add_dim_libs(ugS APPEND DUNE SOURCES ../initug.cc
   OBJECT_DIM_LIBS ${_dim_libs} domS ${_parallel_dim_libs}
-  ADD_LIBS ugL ${DUNE_LIBS}
-  )
+  ADD_LIBS ugL)
 
 if(MPI_C_FOUND)
   add_dune_mpi_flags(ugL)
